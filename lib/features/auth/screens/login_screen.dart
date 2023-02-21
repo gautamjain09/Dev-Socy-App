@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(
-            height: 20,
+            height: 40,
           ),
           const Text(
             "Dive into Anything",
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 40,
           ),
           SignInButton(),
         ],
