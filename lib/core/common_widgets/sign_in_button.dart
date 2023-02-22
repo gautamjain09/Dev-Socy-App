@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
 
-  void signInWithGoogle(WidgetRef ref) {
-    ref.read(authContollerProvider).signInWithGoogle();
+  void signInWithGoogle(BuildContext context, WidgetRef ref) {
+    ref.read(authContollerProvider).signInWithGoogle(context);
   }
 
   @override
@@ -17,7 +17,7 @@ class SignInButton extends ConsumerWidget {
       padding: const EdgeInsets.all(24.0),
       child: ElevatedButton.icon(
         onPressed: () {
-          signInWithGoogle(ref);
+          signInWithGoogle(context, ref);
         },
         icon: Image.asset(
           Constants.googlePath,
