@@ -10,7 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-// Provider for Calling Instance of this in UI
+// ---------------------- Providers ---------------------------------------------->
+
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
     firestore: ref.read(firestoreProvider),
@@ -18,6 +19,8 @@ final authRepositoryProvider = Provider(
     googleSignIn: ref.read(googleSignInProvider),
   ),
 );
+
+//------------------------ Repository & Methods ------------------------------------>
 
 class AuthRepository {
   // private variable instances
@@ -36,6 +39,8 @@ class AuthRepository {
 
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
+
+  Stream<User?> get authStateChange => _auth.authStateChanges();
 
   FutureEither<UserModel> signInWithGoogle() async {
     try {

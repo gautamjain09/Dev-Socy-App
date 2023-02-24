@@ -9,7 +9,7 @@ class LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(authContollerProvider);
+    final isLoading = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
