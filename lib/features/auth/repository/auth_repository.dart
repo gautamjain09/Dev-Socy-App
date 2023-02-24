@@ -14,7 +14,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
     firestore: ref.read(firestoreProvider),
-    firebaseAuth: ref.read(firebaseAuthProvider),
+    auth: ref.read(authProvider),
     googleSignIn: ref.read(googleSignInProvider),
   ),
 );
@@ -22,16 +22,16 @@ final authRepositoryProvider = Provider(
 class AuthRepository {
   // private variable instances
   final FirebaseFirestore _firestore;
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
 
   // this.value not abblicable for private variables
   AuthRepository({
     required FirebaseFirestore firestore,
-    required FirebaseAuth firebaseAuth,
+    required FirebaseAuth auth,
     required GoogleSignIn googleSignIn,
   })  : _firestore = firestore,
-        _firebaseAuth = firebaseAuth,
+        _auth = auth,
         _googleSignIn = googleSignIn;
 
   CollectionReference get _users =>
@@ -47,7 +47,7 @@ class AuthRepository {
       );
 
       UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential);
 
       UserModel userModel;
       if (userCredential.additionalUserInfo!.isNewUser) {
@@ -62,7 +62,6 @@ class AuthRepository {
         );
         await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       } else {
-        // first gives the first element of the stream
         userModel = await getUserData(userCredential.user!.uid).first;
       }
 

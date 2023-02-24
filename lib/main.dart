@@ -1,8 +1,9 @@
-import 'package:devsocy/features/auth/screens/login_screen.dart';
+import 'package:devsocy/router.dart';
 import 'package:devsocy/theme/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -18,11 +19,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Developer Society',
       theme: Pallete.darkModeAppTheme,
-      home: LoginScreen(),
+      routerDelegate: RoutemasterDelegate(
+        routesBuilder: (context) => loggedOutRoute,
+      ),
+      routeInformationParser: const RoutemasterParser(),
     );
   }
 }
