@@ -1,3 +1,4 @@
+import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/core/common_widgets/sign_in_button.dart';
 import 'package:devsocy/core/constants/constants.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
@@ -28,7 +29,7 @@ class LoginScreen extends ConsumerWidget {
         ],
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Loader()
           : Column(
               children: [
                 const SizedBox(
@@ -51,7 +52,7 @@ class LoginScreen extends ConsumerWidget {
                 const SizedBox(
                   height: 40,
                 ),
-                SignInButton(),
+                const SignInButton(),
               ],
             ),
     );

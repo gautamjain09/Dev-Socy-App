@@ -7,14 +7,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ---------------------- Providers ---------------------------------------------->
 
+final userProvider = StateProvider<UserModel?>((ref) => null);
+
 final authControllerProvider = StateNotifierProvider<AuthController, bool>(
   (ref) => AuthController(
     authRepository: ref.watch(authRepositoryProvider),
     ref: ref,
   ),
 );
-
-final userProvider = StateProvider<UserModel?>((ref) => null);
 
 final authStateChangeProvider = StreamProvider((ref) {
   final authController = ref.watch(authControllerProvider.notifier);
