@@ -33,15 +33,17 @@ class CommunityListDrawer extends ConsumerWidget {
                               backgroundImage: NetworkImage(community.avatar),
                             ),
                             title: Text('r/${community.name}'),
-                            onTap: () {},
+                            onTap: () {
+                              Routemaster.of(context)
+                                  .push('/r/${community.name}');
+                            },
                           );
                         }),
                       ),
                     );
                   },
-                  error: (error, stackTrace) => ErrorText(
-                    text: error.toString(),
-                  ),
+                  error: (error, stackTrace) =>
+                      ErrorText(text: error.toString()),
                   loading: () => const Loader(),
                 )
           ],

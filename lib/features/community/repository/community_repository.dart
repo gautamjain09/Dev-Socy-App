@@ -54,4 +54,20 @@ class CommunityRepository {
       return myCommunities;
     });
   }
+
+  Stream<CommunityModel> getCommunityByName(String name) {
+    return _communities.doc(name).snapshots().map((event) =>
+        CommunityModel.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  FutureVoid editCommunity(CommunityModel community) async {
+    try {
+      // Edit Community at the community.name in Firestore
+      return right(_communities.doc(community.name).update(community.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
 }

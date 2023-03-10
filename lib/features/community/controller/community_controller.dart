@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:devsocy/core/constants/constants.dart';
+import 'package:devsocy/core/providers/storage_repository_provider.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/repository/community_repository.dart';
@@ -13,6 +16,7 @@ final communityControllerProvider =
     StateNotifierProvider<CommunityController, bool>(
   (ref) => CommunityController(
     communityRepository: ref.watch(communityRepositoryProvider),
+    storageRepository: ref.watch(storageRepositoryProvider),
     ref: ref,
   ),
 );
@@ -22,16 +26,24 @@ final userCommunitiesProvider = StreamProvider((ref) {
   return communityController.getUserCommunities();
 });
 
+final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
+  final communityController = ref.watch(communityControllerProvider.notifier);
+  return communityController.getCommunityByName(name);
+});
+
 // <----------------------- Controllers & Methods ------------------------>
 
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
+  final StorageRepository _storageRepository;
   final Ref _ref;
 
   CommunityController({
     required CommunityRepository communityRepository,
+    required StorageRepository storageRepository,
     required Ref ref,
   })  : _communityRepository = communityRepository,
+        _storageRepository = storageRepository,
         _ref = ref,
         super(false);
 
@@ -62,5 +74,45 @@ class CommunityController extends StateNotifier<bool> {
   Stream<List<CommunityModel>> getUserCommunities() {
     final uid = _ref.read(userProvider)!.uid;
     return _communityRepository.getUserCommunities(uid);
+  }
+
+  Stream<CommunityModel> getCommunityByName(String name) {
+    return _communityRepository.getCommunityByName(name);
+  }
+
+  void editCommunity(File? bannerFile, File? profileFile, BuildContext context,
+      CommunityModel community) async {
+    if (profileFile != null) {
+      // Stores file at communities/profile/${community.name}
+      final profileUrl = await _storageRepository.storeFile(
+        path: "communities/profile",
+        id: community.name,
+        file: profileFile,
+      );
+
+      profileUrl.fold(
+        (l) => showSnackbar(context, l.message),
+        (r) => community = community.copyWith(avatar: r),
+      );
+    }
+    if (bannerFile != null) {
+      // Stores file at communities/banner/${community.name}
+      final bannerUrl = await _storageRepository.storeFile(
+        path: "communities/banner",
+        id: community.name,
+        file: bannerFile,
+      );
+
+      bannerUrl.fold(
+        (l) => showSnackbar(context, l.message),
+        (r) => community = community.copyWith(banner: r),
+      );
+    }
+
+    final res = await _communityRepository.editCommunity(community);
+    res.fold((l) => showSnackbar(context, l.message), (r) {
+      showSnackbar(context, "Changes Saved Successfully!");
+      Routemaster.of(context).pop();
+    });
   }
 }
