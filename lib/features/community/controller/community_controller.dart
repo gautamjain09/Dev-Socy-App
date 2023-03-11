@@ -31,6 +31,11 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
   return communityController.getCommunityByName(name);
 });
 
+final searchCommunityProvider = StreamProvider.family((ref, String query) {
+  final communityController = ref.watch(communityControllerProvider.notifier);
+  return communityController.searchCommunity(query);
+});
+
 // <----------------------- Controllers & Methods ------------------------>
 
 class CommunityController extends StateNotifier<bool> {
@@ -82,19 +87,8 @@ class CommunityController extends StateNotifier<bool> {
 
   void editCommunity(File? bannerFile, File? profileFile, BuildContext context,
       CommunityModel community) async {
-    if (profileFile != null) {
-      // Stores file at communities/profile/${community.name}
-      final profileUrl = await _storageRepository.storeFile(
-        path: "communities/profile",
-        id: community.name,
-        file: profileFile,
-      );
+    state = true;
 
-      profileUrl.fold(
-        (l) => showSnackbar(context, l.message),
-        (r) => community = community.copyWith(avatar: r),
-      );
-    }
     if (bannerFile != null) {
       // Stores file at communities/banner/${community.name}
       final bannerUrl = await _storageRepository.storeFile(
@@ -108,11 +102,30 @@ class CommunityController extends StateNotifier<bool> {
         (r) => community = community.copyWith(banner: r),
       );
     }
+    if (profileFile != null) {
+      // Stores file at communities/profile/${community.name}
+      final profileUrl = await _storageRepository.storeFile(
+        path: "communities/profile",
+        id: community.name,
+        file: profileFile,
+      );
+
+      profileUrl.fold(
+        (l) => showSnackbar(context, l.message),
+        (r) => community = community.copyWith(avatar: r),
+      );
+    }
 
     final res = await _communityRepository.editCommunity(community);
+    state = false;
+
     res.fold((l) => showSnackbar(context, l.message), (r) {
       showSnackbar(context, "Changes Saved Successfully!");
       Routemaster.of(context).pop();
     });
+  }
+
+  Stream<List<CommunityModel>> searchCommunity(String query) {
+    return _communityRepository.searchCommunity(query);
   }
 }

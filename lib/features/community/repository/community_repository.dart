@@ -62,12 +62,31 @@ class CommunityRepository {
 
   FutureVoid editCommunity(CommunityModel community) async {
     try {
-      // Edit Community at the community.name in Firestore
+      // replace community by new community in Firestore by using community.name
       return right(_communities.doc(community.name).update(community.toMap()));
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<CommunityModel>> searchCommunity(String query) {
+    return _communities
+        .where('name',
+            isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+            isLessThan: query.isEmpty
+                ? 0
+                : query.substring(0, query.length - 1) +
+                    String.fromCharCode(query.codeUnitAt(query.length - 1) + 1))
+        .snapshots()
+        .map((event) {
+      List<CommunityModel> myCommunities = [];
+      for (var community in event.docs) {
+        myCommunities.add(
+            CommunityModel.fromMap(community.data() as Map<String, dynamic>));
+      }
+      return myCommunities;
+    });
   }
 }

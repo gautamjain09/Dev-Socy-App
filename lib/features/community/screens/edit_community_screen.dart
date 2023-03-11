@@ -4,6 +4,7 @@ import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/core/constants/constants.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
+import 'package:devsocy/models/community_model.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,15 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
     }
   }
 
+  void saveChanges(CommunityModel community) async {
+    ref.watch(communityControllerProvider.notifier).editCommunity(
+          bannerFile,
+          profileFile,
+          context,
+          community,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(communityControllerProvider);
@@ -52,7 +62,9 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
               centerTitle: false,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    saveChanges(community);
+                  },
                   child: const Text('Save'),
                 ),
               ],

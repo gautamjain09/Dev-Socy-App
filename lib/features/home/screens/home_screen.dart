@@ -1,4 +1,5 @@
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
+import 'package:devsocy/features/home/delegates/search_community_delegate.dart';
 import 'package:devsocy/features/home/drawers/community_list_drawer.dart';
 import 'package:devsocy/features/home/drawers/profile_drawer.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,13 @@ class HomeScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              //  delegates Inbuilt Method
+              showSearch(
+                context: context,
+                delegate: SearchCommunityDelegate(ref),
+              );
+            },
             icon: const Icon(Icons.search),
           ),
           IconButton(
