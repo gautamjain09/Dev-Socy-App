@@ -2,6 +2,7 @@ import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
+import 'package:devsocy/models/community_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -12,6 +13,13 @@ class CommunityScreen extends ConsumerWidget {
     required this.name,
     super.key,
   });
+
+  void joinCommunity(
+      WidgetRef ref, CommunityModel community, BuildContext context) {
+    ref
+        .read(communityControllerProvider.notifier)
+        .joinCommunity(community, context);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,7 +89,8 @@ class CommunityScreen extends ConsumerWidget {
                                       )
                                     : OutlinedButton(
                                         onPressed: () {
-                                          // navigateToJoin(context);
+                                          joinCommunity(
+                                              ref, community, context);
                                         },
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(

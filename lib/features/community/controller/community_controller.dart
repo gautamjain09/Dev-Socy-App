@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:devsocy/core/constants/constants.dart';
+import 'package:devsocy/core/failure.dart';
 import 'package:devsocy/core/providers/storage_repository_provider.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
@@ -8,6 +9,8 @@ import 'package:devsocy/features/community/repository/community_repository.dart'
 import 'package:devsocy/models/community_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
+
 import 'package:routemaster/routemaster.dart';
 
 // <-------------------------- Providers ---------------------------------->
@@ -127,5 +130,39 @@ class CommunityController extends StateNotifier<bool> {
 
   Stream<List<CommunityModel>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
+  }
+
+  // Joint Function for Join & Leaving the Community
+  void joinCommunity(CommunityModel community, BuildContext context) async {
+    final user = _ref.read(userProvider)!;
+
+    Either<Failure, void> res;
+    if (community.members.contains(user.uid)) {
+      res = await _communityRepository.leaveCommunity(community.name, user.uid);
+    } else {
+      res = await _communityRepository.joinCommunity(community.name, user.uid);
+    }
+
+    res.fold(
+      (l) => showSnackbar(context, l.message),
+      (r) {
+        if (community.members.contains(user.uid)) {
+          showSnackbar(context, "Community Left Successfully!");
+        } else {
+          showSnackbar(context, "Community Joined Successfully!");
+        }
+      },
+    );
+  }
+
+  void addModsInACommunity(
+      String communityName, List<String> modsUids, BuildContext context) async {
+    final res =
+        await _communityRepository.addModsInACommunity(communityName, modsUids);
+
+    res.fold((l) => showSnackbar(context, l.message), (r) {
+      showSnackbar(context, "Mods Updated Successfully!");
+      Routemaster.of(context).pop();
+    });
   }
 }
