@@ -2,6 +2,7 @@ import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/theme/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class ProfileDrawer extends ConsumerWidget {
   const ProfileDrawer({super.key});
@@ -36,7 +37,7 @@ class ProfileDrawer extends ConsumerWidget {
               title: const Text('My Profile'),
               leading: const Icon(Icons.person),
               onTap: () {
-                // user Profile Screen Route
+                Routemaster.of(context).push('u/${user.uid}');
               },
             ),
             ListTile(

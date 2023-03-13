@@ -115,6 +115,8 @@ class CommunityScreen extends ConsumerWidget {
                                 '${community.members.length} members',
                               ),
                             ),
+                            const SizedBox(height: 10),
+                            const Divider(thickness: 2.5),
                           ],
                         ),
                       ),
