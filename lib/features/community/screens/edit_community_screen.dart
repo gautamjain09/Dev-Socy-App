@@ -5,6 +5,7 @@ import 'package:devsocy/core/constants/constants.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/models/community_model.dart';
+import 'package:devsocy/theme/pallete.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -53,10 +54,11 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(communityControllerProvider);
+    final currentTheme = ref.watch(themeNotifierProvider);
 
     return ref.watch(getCommunityByNameProvider(widget.name)).when(
           data: (community) => Scaffold(
-            // backgroundColor: currentTheme.backgroundColor,
+            backgroundColor: currentTheme.backgroundColor,
             appBar: AppBar(
               title: const Text('Edit Community'),
               centerTitle: false,
@@ -86,8 +88,8 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                                   radius: const Radius.circular(10),
                                   dashPattern: const [10, 4],
                                   strokeCap: StrokeCap.round,
-                                  // color: Colors.white,
-                                  //     currentTheme.textTheme.bodyText2!.color!,
+                                  color:
+                                      currentTheme.textTheme.bodyText2!.color!,
                                   child: Container(
                                     width: double.infinity,
                                     height: 150,

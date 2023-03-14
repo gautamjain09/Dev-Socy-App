@@ -70,8 +70,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(userProfileControllerProvider);
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return ref.watch(getUserDataProvider(widget.uid)).when(
           data: (userData) => Scaffold(
+            backgroundColor: currentTheme.backgroundColor,
             appBar: AppBar(
               title: const Text('Edit Profile'),
               centerTitle: false,
@@ -97,7 +100,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                               GestureDetector(
                                 onTap: selectBannerImage,
                                 child: DottedBorder(
-                                  color: Pallete.whiteColor,
+                                  color:
+                                      currentTheme.textTheme.bodyText2!.color!,
                                   borderType: BorderType.RRect,
                                   radius: const Radius.circular(10),
                                   dashPattern: const [10, 4],
