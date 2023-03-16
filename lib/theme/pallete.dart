@@ -34,7 +34,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
 
   void toggleTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (_mode == ThemeData.dark()) {
+    if (_mode == ThemeMode.dark) {
       _mode = ThemeMode.light;
       state = Pallete.lightModeAppTheme;
       sharedPreferences.setString('theme', 'light');

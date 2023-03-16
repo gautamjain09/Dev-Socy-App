@@ -15,10 +15,6 @@ class ProfileDrawer extends ConsumerWidget {
     ref.read(themeNotifierProvider.notifier).toggleTheme();
   }
 
-  bool getTheme(WidgetRef ref) {
-    return (ref.read(themeNotifierProvider.notifier).mode == ThemeMode.dark);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
@@ -26,6 +22,7 @@ class ProfileDrawer extends ConsumerWidget {
       child: SafeArea(
         child: Column(
           children: [
+            const SizedBox(height: 15),
             CircleAvatar(
               backgroundImage: NetworkImage(user.profilePic),
               radius: 75,
@@ -60,8 +57,9 @@ class ProfileDrawer extends ConsumerWidget {
             ),
             // Theme Toggler
             Switch.adaptive(
-              value: getTheme(ref),
-              onChanged: (value) => toggleTheme,
+              value: ref.watch(themeNotifierProvider.notifier).mode ==
+                  ThemeMode.dark,
+              onChanged: (val) => toggleTheme(ref),
             )
           ],
         ),
