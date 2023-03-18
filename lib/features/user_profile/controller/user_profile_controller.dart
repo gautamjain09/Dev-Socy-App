@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:devsocy/core/enums.dart';
 import 'package:devsocy/core/providers/storage_repository_provider.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/user_profile/repository/user_profile_repository.dart';
+import 'package:devsocy/models/post_model.dart';
 import 'package:devsocy/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +19,10 @@ final userProfileControllerProvider =
     storageRepository: ref.watch(storageRepositoryProvider),
     ref: ref,
   );
+});
+
+final getUserPostsProvider = StreamProvider.family((ref, String uid) {
+  return ref.watch(userProfileControllerProvider.notifier).getuserPosts(uid);
 });
 
 // <----------------------- Controllers & Methods ------------------------>
@@ -74,5 +80,20 @@ class UserProfileController extends StateNotifier<bool> {
       _ref.read(userProvider.notifier).update((state) => user);
       Routemaster.of(context).pop();
     });
+  }
+
+  Stream<List<PostModel>> getuserPosts(String uid) {
+    return _userProfileRepository.getUserPost(uid);
+  }
+
+  void updateUserKarma(UserKarma karma) async {
+    UserModel user = _ref.read(userProvider)!;
+    user = user.copyWith(karma: user.karma + karma.karma);
+
+    final res = await _userProfileRepository.updateUserKarma(user);
+    res.fold(
+      (l) => null,
+      (r) => _ref.read(userProvider.notifier).update((state) => user),
+    );
   }
 }

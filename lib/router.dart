@@ -6,6 +6,7 @@ import 'package:devsocy/features/community/screens/edit_community_screen.dart';
 import 'package:devsocy/features/community/screens/mod_tools_screen.dart';
 import 'package:devsocy/features/home/screens/home_screen.dart';
 import 'package:devsocy/features/post/screens/add_post_type_screen.dart';
+import 'package:devsocy/features/post/screens/comment_screen.dart';
 import 'package:devsocy/features/user_profile/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
@@ -56,6 +57,11 @@ final loggedInRoute = RouteMap(
     '/add-post/:type': (route) => MaterialPage(
           child: AddPostTypeScreen(
             type: route.pathParameters['type']!,
+          ),
+        ),
+    '/post/:postId/comments': (route) => MaterialPage(
+          child: CommentScreen(
+            postId: route.pathParameters['postId']!,
           ),
         ),
   },

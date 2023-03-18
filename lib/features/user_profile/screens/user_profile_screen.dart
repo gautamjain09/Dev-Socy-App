@@ -1,6 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
+import 'package:devsocy/core/common_widgets/post_card.dart';
+import 'package:devsocy/features/user_profile/controller/user_profile_controller.dart';
+import 'package:devsocy/models/post_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
@@ -92,10 +95,28 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                   ];
                 }),
-                body: const Text("Display Posts"),
+                body: ref.watch(getUserPostsProvider(uid)).when(
+                      data: (userPosts) {
+                        return ListView.builder(
+                          itemCount: userPosts.length,
+                          itemBuilder: (context, index) {
+                            PostModel post = userPosts[index];
+                            return PostCard(post: post);
+                          },
+                        );
+                      },
+                      error: ((error, stackTrace) =>
+                          ErrorText(text: error.toString())),
+                      loading: () => const Loader(),
+                    ),
               );
             },
-            error: ((error, stackTrace) => ErrorText(text: error.toString())),
+            error: ((error, stackTrace) {
+              if (kDebugMode) {
+                print(error.toString());
+              }
+              return ErrorText(text: error.toString());
+            }),
             loading: () => const Loader(),
           ),
     );

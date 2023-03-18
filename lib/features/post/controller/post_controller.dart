@@ -1,12 +1,16 @@
 import 'dart:io';
+import 'package:devsocy/core/enums.dart';
 import 'package:devsocy/core/providers/storage_repository_provider.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/post/repository/post_repository.dart';
+import 'package:devsocy/features/user_profile/controller/user_profile_controller.dart';
+import 'package:devsocy/models/comment_model.dart';
 import 'package:devsocy/models/community_model.dart';
 import 'package:devsocy/models/post_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
@@ -28,6 +32,14 @@ final userPostsProvider =
       .fetchUserPost(userCommunities);
 });
 
+final getPostByIdProvider = StreamProvider.family((ref, String postId) {
+  return ref.watch(postControllerProvider.notifier).getPostById(postId);
+});
+
+final getPostCommentsProvider = StreamProvider.family((ref, String postId) {
+  return ref.watch(postControllerProvider.notifier).getPostComments(postId);
+});
+
 // <-------------------------- Repository & Methods --------------------------->
 
 class PostController extends StateNotifier<bool> {
@@ -44,6 +56,8 @@ class PostController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
+  get postId => null;
+
   // <---------------------------- Add Text ----------------------------->
 
   void postText({
@@ -52,6 +66,7 @@ class PostController extends StateNotifier<bool> {
     required CommunityModel community,
     required String description,
   }) async {
+    state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
 
@@ -71,7 +86,13 @@ class PostController extends StateNotifier<bool> {
       description: description,
     );
 
+    // Updating karma -> Post Text
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.postText);
+
     final res = await _postRepository.addPost(post);
+    state = false;
     res.fold((l) => showSnackbar(context, l.message), (r) {
       showSnackbar(context, "Posted Successfully");
       Routemaster.of(context).pop();
@@ -86,6 +107,7 @@ class PostController extends StateNotifier<bool> {
     required CommunityModel community,
     required String link,
   }) async {
+    state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
 
@@ -105,7 +127,13 @@ class PostController extends StateNotifier<bool> {
       link: link,
     );
 
+    // Updating karma -> postLink
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.postLink);
+
     final res = await _postRepository.addPost(post);
+    state = false;
     res.fold((l) => showSnackbar(context, l.message), (r) {
       showSnackbar(context, "Posted Successfully");
       Routemaster.of(context).pop();
@@ -120,6 +148,7 @@ class PostController extends StateNotifier<bool> {
     required CommunityModel community,
     required File? file,
   }) async {
+    state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
     final imageUrl = await _storageRepository.storeFile(
@@ -147,7 +176,13 @@ class PostController extends StateNotifier<bool> {
           link: r, // Image
         );
 
+        // Updating karma -> postImage
+        _ref
+            .read(userProfileControllerProvider.notifier)
+            .updateUserKarma(UserKarma.postImage);
+
         final res = await _postRepository.addPost(post);
+        state = false;
         res.fold((l) => showSnackbar(context, l.message), (r) {
           showSnackbar(context, "Posted Successfully");
           Routemaster.of(context).pop();
@@ -162,5 +197,65 @@ class PostController extends StateNotifier<bool> {
     } else {
       return _postRepository.fetchUserPost(userCommunities);
     }
+  }
+
+  void deletePost(PostModel post, BuildContext context) async {
+    // Updating karma - > deletePost
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.postDelete);
+
+    final res = await _postRepository.deletePost(post);
+    res.fold(
+      (l) => showSnackbar(context, l.message),
+      (r) => showSnackbar(context, "Post Deleted Successfully!"),
+    );
+  }
+
+  void upVotePost(PostModel post) async {
+    final user = _ref.read(userProvider)!;
+    _postRepository.upVotePost(post, user.uid);
+  }
+
+  void downVotePost(PostModel post) async {
+    final user = _ref.read(userProvider)!;
+    _postRepository.downVotePost(post, user.uid);
+  }
+
+  Stream<PostModel> getPostById(String postId) {
+    return _postRepository.getPostById(postId);
+  }
+
+  void addComment(
+      {required BuildContext context,
+      required String text,
+      required PostModel post}) async {
+    String commentId = const Uuid().v1();
+    final user = _ref.read(userProvider)!;
+
+    CommentModel comment = CommentModel(
+      id: commentId,
+      text: text,
+      createdAt: DateTime.now(),
+      postId: post.id,
+      username: user.name,
+      uid: user.uid,
+      profilePic: user.profilePic,
+    );
+
+    // Updating karma -> Comment
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.comment);
+
+    final res = await _postRepository.addComment(comment);
+    res.fold(
+      (l) => showSnackbar(context, l.message),
+      (r) => showSnackbar(context, 'Comment Added Successfully!'),
+    );
+  }
+
+  Stream<List<CommentModel>> getPostComments(String postId) {
+    return _postRepository.getPostComments(postId);
   }
 }

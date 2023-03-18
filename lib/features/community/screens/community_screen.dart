@@ -1,8 +1,11 @@
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
+import 'package:devsocy/core/common_widgets/post_card.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/models/community_model.dart';
+import 'package:devsocy/models/post_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -123,7 +126,24 @@ class CommunityScreen extends ConsumerWidget {
                     ),
                   ];
                 }),
-                body: Container(),
+                body: ref.watch(getCommunityPostsProvider(name)).when(
+                      data: (communityPosts) {
+                        return ListView.builder(
+                          itemCount: communityPosts.length,
+                          itemBuilder: (context, index) {
+                            PostModel post = communityPosts[index];
+                            return PostCard(post: post);
+                          },
+                        );
+                      },
+                      error: ((error, stackTrace) {
+                        if (kDebugMode) {
+                          print(error.toString());
+                        }
+                        return ErrorText(text: error.toString());
+                      }),
+                      loading: () => const Loader(),
+                    ),
               );
             },
             error: ((error, stackTrace) => ErrorText(text: error.toString())),

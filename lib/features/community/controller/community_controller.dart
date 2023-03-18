@@ -7,6 +7,7 @@ import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/repository/community_repository.dart';
 import 'package:devsocy/models/community_model.dart';
+import 'package:devsocy/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -37,6 +38,13 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
 final searchCommunityProvider = StreamProvider.family((ref, String query) {
   final communityController = ref.watch(communityControllerProvider.notifier);
   return communityController.searchCommunity(query);
+});
+
+final getCommunityPostsProvider =
+    StreamProvider.family((ref, String communityName) {
+  return ref
+      .watch(communityControllerProvider.notifier)
+      .getCommunityPosts(communityName);
 });
 
 // <----------------------- Controllers & Methods ------------------------>
@@ -164,5 +172,9 @@ class CommunityController extends StateNotifier<bool> {
       showSnackbar(context, "Mods Updated Successfully!");
       Routemaster.of(context).pop();
     });
+  }
+
+  Stream<List<PostModel>> getCommunityPosts(String communityName) {
+    return _communityRepository.getCommunityPost(communityName);
   }
 }

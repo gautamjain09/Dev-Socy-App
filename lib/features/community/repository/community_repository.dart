@@ -4,6 +4,7 @@ import 'package:devsocy/core/failure.dart';
 import 'package:devsocy/core/providers/firebase_providers.dart';
 import 'package:devsocy/core/type_defs.dart';
 import 'package:devsocy/models/community_model.dart';
+import 'package:devsocy/models/post_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -40,6 +41,9 @@ class CommunityRepository {
 
   CollectionReference get _communities =>
       _firestore.collection(FirebaseConstants.communitiesCollection);
+
+  CollectionReference get _post =>
+      _firestore.collection(FirebaseConstants.postsCollection);
 
   Stream<List<CommunityModel>> getUserCommunities(String uid) {
     return _communities
@@ -130,5 +134,23 @@ class CommunityRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<PostModel>> getCommunityPost(String communityName) {
+    return _post
+        .where(
+          'communityName',
+          isEqualTo: communityName,
+        )
+        .orderBy(
+          'createdAt',
+          descending: true,
+        )
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => PostModel.fromMap(
+                  e.data() as Map<String, dynamic>,
+                ))
+            .toList());
   }
 }
