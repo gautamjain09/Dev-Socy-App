@@ -1,6 +1,7 @@
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/core/common_widgets/post_card.dart';
+import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/features/post/controller/post_controller.dart';
 import 'package:devsocy/models/post_model.dart';
@@ -13,29 +14,46 @@ class FeedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(userCommunitiesProvider).when(
-          data: (userCommunities) {
-            return ref.watch(userPostsProvider(userCommunities)).when(
-                  data: (userPosts) {
-                    return ListView.builder(
-                      itemCount: userPosts.length,
-                      itemBuilder: (context, index) {
-                        PostModel post = userPosts[index];
-                        return PostCard(post: post);
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
+
+    return !isGuest
+        ? ref.watch(userCommunitiesProvider).when(
+              data: (userCommunities) {
+                return ref.watch(userPostsProvider(userCommunities)).when(
+                      data: (userPosts) {
+                        return ListView.builder(
+                          itemCount: userPosts.length,
+                          itemBuilder: (context, index) {
+                            PostModel post = userPosts[index];
+                            return PostCard(post: post);
+                          },
+                        );
                       },
+                      error: ((error, stackTrace) {
+                        if (kDebugMode) {
+                          print(error.toString());
+                        }
+                        return ErrorText(text: error.toString());
+                      }),
+                      loading: () => const Loader(),
                     );
+              },
+              error: ((error, stackTrace) => ErrorText(text: error.toString())),
+              loading: () => const Loader(),
+            )
+        : ref.watch(guestPostsProvider).when(
+              data: (guestPosts) {
+                return ListView.builder(
+                  itemCount: guestPosts.length,
+                  itemBuilder: (context, index) {
+                    PostModel post = guestPosts[index];
+                    return PostCard(post: post);
                   },
-                  error: ((error, stackTrace) {
-                    if (kDebugMode) {
-                      print(error.toString());
-                    }
-                    return ErrorText(text: error.toString());
-                  }),
-                  loading: () => const Loader(),
                 );
-          },
-          error: ((error, stackTrace) => ErrorText(text: error.toString())),
-          loading: () => const Loader(),
-        );
+              },
+              error: ((error, stackTrace) => ErrorText(text: error.toString())),
+              loading: () => const Loader(),
+            );
   }
 }

@@ -38,7 +38,7 @@ class PostRepository {
     }
   }
 
-  Stream<List<PostModel>> fetchUserPost(List<CommunityModel> userCommunities) {
+  Stream<List<PostModel>> fetchUserPosts(List<CommunityModel> userCommunities) {
     return _posts
         .where(
           'communityName',
@@ -139,6 +139,19 @@ class PostRepository {
             .map((e) => CommentModel.fromMap(
                   e.data() as Map<String, dynamic>,
                 ))
+            .toList());
+  }
+
+  Stream<List<PostModel>> fetchGuestPosts() {
+    return _posts
+        .orderBy(
+          'createdAt',
+          descending: true,
+        )
+        .limit(9)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => PostModel.fromMap(e.data() as Map<String, dynamic>))
             .toList());
   }
 }

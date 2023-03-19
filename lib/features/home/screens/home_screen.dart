@@ -4,7 +4,7 @@ import 'package:devsocy/features/home/drawers/community_list_drawer.dart';
 import 'package:devsocy/features/home/drawers/profile_drawer.dart';
 import 'package:devsocy/features/post/screens/add_post_screen.dart';
 import 'package:devsocy/features/post/screens/feed_screen.dart';
-import 'package:devsocy/theme/pallete.dart';
+import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,8 +31,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider)!;
     final currentTheme = ref.watch(themeNotifierProvider);
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated; // NotAuthenticatd -> Guest
 
     return Scaffold(
       appBar: AppBar(
@@ -59,10 +60,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-          ),
           Builder(
             builder: (context) {
               return IconButton(
@@ -79,29 +76,31 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: tabList[_index],
       drawer: const CommunityListDrawer(),
-      endDrawer: const ProfileDrawer(),
-      bottomNavigationBar: CupertinoTabBar(
-        activeColor: currentTheme.iconTheme.color,
-        backgroundColor: currentTheme.backgroundColor,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.home),
+      endDrawer: isGuest ? null : const ProfileDrawer(),
+      bottomNavigationBar: isGuest
+          ? null
+          : CupertinoTabBar(
+              activeColor: currentTheme.iconTheme.color,
+              backgroundColor: currentTheme.backgroundColor,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.home),
+                  ),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.add),
+                  ),
+                  label: '',
+                ),
+              ],
+              onTap: onPageChanged,
+              currentIndex: _index,
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(Icons.add),
-            ),
-            label: '',
-          ),
-        ],
-        onTap: onPageChanged,
-        currentIndex: _index,
-      ),
     );
   }
 }

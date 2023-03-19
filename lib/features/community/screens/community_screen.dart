@@ -27,6 +27,8 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
+
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
             data: (community) {
@@ -73,43 +75,44 @@ class CommunityScreen extends ConsumerWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                community.mods.contains(user.uid)
-                                    ? OutlinedButton(
-                                        onPressed: () {
-                                          Routemaster.of(context)
-                                              .push('/mod-tools/$name');
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                if (!isGuest)
+                                  community.mods.contains(user.uid)
+                                      ? OutlinedButton(
+                                          onPressed: () {
+                                            Routemaster.of(context)
+                                                .push('/mod-tools/$name');
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 25,
+                                            ),
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 25,
+                                          child: const Text('Mod Tools'),
+                                        )
+                                      : OutlinedButton(
+                                          onPressed: () {
+                                            joinCommunity(
+                                                ref, community, context);
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 25,
+                                            ),
                                           ),
-                                        ),
-                                        child: const Text('Mod Tools'),
-                                      )
-                                    : OutlinedButton(
-                                        onPressed: () {
-                                          joinCommunity(
-                                              ref, community, context);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
+                                          child: Text(
+                                            community.members.contains(user.uid)
+                                                ? 'Joined'
+                                                : 'Join',
                                           ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 25,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          community.members.contains(user.uid)
-                                              ? 'Joined'
-                                              : 'Join',
-                                        ),
-                                      )
+                                        )
                               ],
                             ),
                             Padding(

@@ -1,14 +1,17 @@
 import 'package:devsocy/core/constants/constants.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
-import 'package:devsocy/theme/pallete.dart';
+import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignInButton extends ConsumerWidget {
-  const SignInButton({super.key});
+  final bool isFromLogin;
+  const SignInButton({super.key, this.isFromLogin = true});
 
   void signInWithGoogle(BuildContext context, WidgetRef ref) {
-    ref.read(authControllerProvider.notifier).signInWithGoogle(context);
+    ref
+        .read(authControllerProvider.notifier)
+        .signInWithGoogle(context, isFromLogin);
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/features/post/controller/post_controller.dart';
 import 'package:devsocy/models/post_model.dart';
-import 'package:devsocy/theme/pallete.dart';
+import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -37,6 +37,7 @@ class PostCard extends ConsumerWidget {
     final isTypeLink = (post.type == 'link');
     final user = ref.watch(userProvider)!;
     final currentTheme = ref.watch(themeNotifierProvider);
+    final isGuest = !user.isAuthenticated;
 
     return Column(
       children: [
@@ -179,7 +180,8 @@ class PostCard extends ConsumerWidget {
                               Row(
                                 children: [
                                   IconButton(
-                                    onPressed: () => upVotePost(ref),
+                                    onPressed:
+                                        isGuest ? () {} : () => upVotePost(ref),
                                     icon: Icon(
                                       Constants.up,
                                       size: 24,
@@ -195,7 +197,9 @@ class PostCard extends ConsumerWidget {
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () => downVotePost(ref),
+                                    onPressed: isGuest
+                                        ? () {}
+                                        : () => downVotePost(ref),
                                     icon: Icon(
                                       Constants.down,
                                       size: 24,

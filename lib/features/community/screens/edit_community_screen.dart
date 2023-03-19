@@ -5,7 +5,7 @@ import 'package:devsocy/core/constants/constants.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/models/community_model.dart';
-import 'package:devsocy/theme/pallete.dart';
+import 'package:devsocy/core/theme/pallete.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';

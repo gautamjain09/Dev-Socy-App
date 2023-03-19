@@ -10,7 +10,6 @@ import 'package:devsocy/models/community_model.dart';
 import 'package:devsocy/models/post_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
@@ -29,7 +28,7 @@ final userPostsProvider =
     StreamProvider.family((ref, List<CommunityModel> userCommunities) {
   return ref
       .watch(postControllerProvider.notifier)
-      .fetchUserPost(userCommunities);
+      .fetchUserPosts(userCommunities);
 });
 
 final getPostByIdProvider = StreamProvider.family((ref, String postId) {
@@ -38,6 +37,10 @@ final getPostByIdProvider = StreamProvider.family((ref, String postId) {
 
 final getPostCommentsProvider = StreamProvider.family((ref, String postId) {
   return ref.watch(postControllerProvider.notifier).getPostComments(postId);
+});
+
+final guestPostsProvider = StreamProvider((ref) {
+  return ref.watch(postControllerProvider.notifier).fetchGuestPosts();
 });
 
 // <-------------------------- Repository & Methods --------------------------->
@@ -191,11 +194,11 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  Stream<List<PostModel>> fetchUserPost(List<CommunityModel> userCommunities) {
+  Stream<List<PostModel>> fetchUserPosts(List<CommunityModel> userCommunities) {
     if (userCommunities.isEmpty) {
       return Stream.value([]);
     } else {
-      return _postRepository.fetchUserPost(userCommunities);
+      return _postRepository.fetchUserPosts(userCommunities);
     }
   }
 
@@ -257,5 +260,9 @@ class PostController extends StateNotifier<bool> {
 
   Stream<List<CommentModel>> getPostComments(String postId) {
     return _postRepository.getPostComments(postId);
+  }
+
+  Stream<List<PostModel>> fetchGuestPosts() {
+    return _postRepository.fetchGuestPosts();
   }
 }

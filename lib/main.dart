@@ -3,7 +3,7 @@ import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/models/user_model.dart';
 import 'package:devsocy/router.dart';
-import 'package:devsocy/theme/pallete.dart';
+import 'package:devsocy/core/theme/pallete.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
