@@ -6,6 +6,7 @@ import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/user_profile/repository/user_profile_repository.dart';
 import 'package:devsocy/models/post_model.dart';
 import 'package:devsocy/models/user_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -40,15 +41,22 @@ class UserProfileController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
-  void editProfile(File? bannerFile, File? profileFile, String name,
-      BuildContext context) async {
+  void editProfile(
+    File? bannerFile,
+    File? profileFile,
+    Uint8List? bannerWebFile,
+    Uint8List? profileWebFile,
+    String name,
+    BuildContext context,
+  ) async {
     state = true;
     UserModel user = _ref.read(userProvider)!;
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       final bannerUrl = await _storageRepository.storeFile(
         path: "users/banner",
         id: user.uid,
         file: bannerFile,
+        webFile: bannerWebFile,
       );
 
       bannerUrl.fold(
@@ -56,11 +64,12 @@ class UserProfileController extends StateNotifier<bool> {
         (r) => user = user.copyWith(banner: r),
       );
     }
-    if (profileFile != null) {
+    if (profileFile != null || profileWebFile != null) {
       final profileUrl = await _storageRepository.storeFile(
         path: "users/profile",
         id: user.uid,
         file: profileFile,
+        webFile: profileWebFile,
       );
 
       profileUrl.fold(

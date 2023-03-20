@@ -5,6 +5,7 @@ import 'package:devsocy/features/community/screens/create_community_screen.dart'
 import 'package:devsocy/features/community/screens/edit_community_screen.dart';
 import 'package:devsocy/features/community/screens/mod_tools_screen.dart';
 import 'package:devsocy/features/home/screens/home_screen.dart';
+import 'package:devsocy/features/post/screens/add_post_screen.dart';
 import 'package:devsocy/features/post/screens/add_post_type_screen.dart';
 import 'package:devsocy/features/post/screens/comment_screen.dart';
 import 'package:devsocy/features/user_profile/screens/user_profile_screen.dart';
@@ -53,6 +54,9 @@ final loggedInRoute = RouteMap(
           child: EditProfileScreen(
             uid: route.pathParameters['uid']!,
           ),
+        ),
+    '/add-post': (route) => const MaterialPage(
+          child: AddPostScreen(),
         ),
     '/add-post/:type': (route) => MaterialPage(
           child: AddPostTypeScreen(

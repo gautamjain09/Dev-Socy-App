@@ -8,6 +8,7 @@ import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/repository/community_repository.dart';
 import 'package:devsocy/models/community_model.dart';
 import 'package:devsocy/models/post_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -96,16 +97,23 @@ class CommunityController extends StateNotifier<bool> {
     return _communityRepository.getCommunityByName(name);
   }
 
-  void editCommunity(File? bannerFile, File? profileFile, BuildContext context,
-      CommunityModel community) async {
+  void editCommunity(
+    File? bannerFile,
+    File? profileFile,
+    Uint8List? bannerWebFile,
+    Uint8List? profileWebFile,
+    BuildContext context,
+    CommunityModel community,
+  ) async {
     state = true;
 
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       // Stores file at communities/banner/${community.name}
       final bannerUrl = await _storageRepository.storeFile(
         path: "communities/banner",
         id: community.name,
         file: bannerFile,
+        webFile: bannerWebFile,
       );
 
       bannerUrl.fold(
@@ -113,12 +121,13 @@ class CommunityController extends StateNotifier<bool> {
         (r) => community = community.copyWith(banner: r),
       );
     }
-    if (profileFile != null) {
+    if (profileFile != null || profileWebFile != null) {
       // Stores file at communities/profile/${community.name}
       final profileUrl = await _storageRepository.storeFile(
         path: "communities/profile",
         id: community.name,
         file: profileFile,
+        webFile: profileWebFile,
       );
 
       profileUrl.fold(

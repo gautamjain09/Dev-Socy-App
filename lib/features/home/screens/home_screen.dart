@@ -6,8 +6,10 @@ import 'package:devsocy/features/post/screens/add_post_screen.dart';
 import 'package:devsocy/features/post/screens/feed_screen.dart';
 import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -60,6 +62,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
             icon: const Icon(Icons.search),
           ),
+          IconButton(
+            onPressed: isGuest
+                ? () {}
+                : () {
+                    Routemaster.of(context).push('/add-post');
+                  },
+            icon: const Icon(Icons.add),
+          ),
           Builder(
             builder: (context) {
               return IconButton(
@@ -76,8 +86,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: tabList[_index],
       drawer: const CommunityListDrawer(),
-      endDrawer: isGuest ? null : const ProfileDrawer(),
-      bottomNavigationBar: isGuest
+      endDrawer: const ProfileDrawer(),
+      bottomNavigationBar: isGuest || kIsWeb
           ? null
           : CupertinoTabBar(
               activeColor: currentTheme.iconTheme.color,

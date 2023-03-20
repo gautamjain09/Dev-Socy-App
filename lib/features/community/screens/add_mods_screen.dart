@@ -1,3 +1,4 @@
+import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
@@ -52,38 +53,40 @@ class _AddModsScreenState extends ConsumerState<AddModsScreen> {
           ),
         ],
       ),
-      body: ref.watch(getCommunityByNameProvider(widget.name)).when(
-            data: (community) => ListView.builder(
-              itemCount: community.members.length,
-              itemBuilder: (BuildContext context, int index) {
-                final member = community.members[index];
-                return ref.watch(getUserDataProvider(member)).when(
-                      data: ((userData) {
-                        if (community.mods.contains(member) && counter == 0) {
-                          modsUids.add(member);
-                        }
-                        counter++;
-                        return CheckboxListTile(
-                          value: modsUids.contains(member),
-                          onChanged: (val) {
-                            if (val!) {
-                              addUid(member);
-                            } else {
-                              removeUid(member);
-                            }
-                          },
-                          title: Text(userData.name),
-                        );
-                      }),
-                      error: (error, stackTrace) =>
-                          ErrorText(text: error.toString()),
-                      loading: () => const Loader(),
-                    );
-              },
+      body: Responsive(
+        child: ref.watch(getCommunityByNameProvider(widget.name)).when(
+              data: (community) => ListView.builder(
+                itemCount: community.members.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final member = community.members[index];
+                  return ref.watch(getUserDataProvider(member)).when(
+                        data: ((userData) {
+                          if (community.mods.contains(member) && counter == 0) {
+                            modsUids.add(member);
+                          }
+                          counter++;
+                          return CheckboxListTile(
+                            value: modsUids.contains(member),
+                            onChanged: (val) {
+                              if (val!) {
+                                addUid(member);
+                              } else {
+                                removeUid(member);
+                              }
+                            },
+                            title: Text(userData.name),
+                          );
+                        }),
+                        error: (error, stackTrace) =>
+                            ErrorText(text: error.toString()),
+                        loading: () => const Loader(),
+                      );
+                },
+              ),
+              error: (error, stackTrace) => ErrorText(text: error.toString()),
+              loading: () => const Loader(),
             ),
-            error: (error, stackTrace) => ErrorText(text: error.toString()),
-            loading: () => const Loader(),
-          ),
+      ),
     );
   }
 }

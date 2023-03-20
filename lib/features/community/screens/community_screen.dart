@@ -1,3 +1,4 @@
+import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/core/common_widgets/post_card.dart';
@@ -129,24 +130,26 @@ class CommunityScreen extends ConsumerWidget {
                     ),
                   ];
                 }),
-                body: ref.watch(getCommunityPostsProvider(name)).when(
-                      data: (communityPosts) {
-                        return ListView.builder(
-                          itemCount: communityPosts.length,
-                          itemBuilder: (context, index) {
-                            PostModel post = communityPosts[index];
-                            return PostCard(post: post);
-                          },
-                        );
-                      },
-                      error: ((error, stackTrace) {
-                        if (kDebugMode) {
-                          print(error.toString());
-                        }
-                        return ErrorText(text: error.toString());
-                      }),
-                      loading: () => const Loader(),
-                    ),
+                body: Responsive(
+                  child: ref.watch(getCommunityPostsProvider(name)).when(
+                        data: (communityPosts) {
+                          return ListView.builder(
+                            itemCount: communityPosts.length,
+                            itemBuilder: (context, index) {
+                              PostModel post = communityPosts[index];
+                              return PostCard(post: post);
+                            },
+                          );
+                        },
+                        error: ((error, stackTrace) {
+                          if (kDebugMode) {
+                            print(error.toString());
+                          }
+                          return ErrorText(text: error.toString());
+                        }),
+                        loading: () => const Loader(),
+                      ),
+                ),
               );
             },
             error: ((error, stackTrace) => ErrorText(text: error.toString())),

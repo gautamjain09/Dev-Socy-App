@@ -1,3 +1,4 @@
+import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/core/common_widgets/post_card.dart';
@@ -95,20 +96,22 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                   ];
                 }),
-                body: ref.watch(getUserPostsProvider(uid)).when(
-                      data: (userPosts) {
-                        return ListView.builder(
-                          itemCount: userPosts.length,
-                          itemBuilder: (context, index) {
-                            PostModel post = userPosts[index];
-                            return PostCard(post: post);
-                          },
-                        );
-                      },
-                      error: ((error, stackTrace) =>
-                          ErrorText(text: error.toString())),
-                      loading: () => const Loader(),
-                    ),
+                body: Responsive(
+                  child: ref.watch(getUserPostsProvider(uid)).when(
+                        data: (userPosts) {
+                          return ListView.builder(
+                            itemCount: userPosts.length,
+                            itemBuilder: (context, index) {
+                              PostModel post = userPosts[index];
+                              return PostCard(post: post);
+                            },
+                          );
+                        },
+                        error: ((error, stackTrace) =>
+                            ErrorText(text: error.toString())),
+                        loading: () => const Loader(),
+                      ),
+                ),
               );
             },
             error: ((error, stackTrace) {

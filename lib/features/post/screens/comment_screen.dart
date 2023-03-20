@@ -1,3 +1,4 @@
+import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/comment_card.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
@@ -53,15 +54,17 @@ class _CommentScreenState extends ConsumerState<CommentScreen> {
                 children: [
                   PostCard(post: data),
                   if (!isGuest)
-                    TextField(
-                      onSubmitted: (val) {
-                        addComment(data);
-                      },
-                      controller: commentController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'What are your thoughts?',
-                        filled: true,
+                    Responsive(
+                      child: TextField(
+                        onSubmitted: (val) {
+                          addComment(data);
+                        },
+                        controller: commentController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'What are your thoughts?',
+                          filled: true,
+                        ),
                       ),
                     ),
                   ref.watch(getPostCommentsProvider(widget.postId)).when(

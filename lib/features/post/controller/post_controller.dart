@@ -8,6 +8,7 @@ import 'package:devsocy/features/user_profile/controller/user_profile_controller
 import 'package:devsocy/models/comment_model.dart';
 import 'package:devsocy/models/community_model.dart';
 import 'package:devsocy/models/post_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -150,6 +151,7 @@ class PostController extends StateNotifier<bool> {
     required String title,
     required CommunityModel community,
     required File? file,
+    required Uint8List? webFile,
   }) async {
     state = true;
     String postId = const Uuid().v1();
@@ -158,6 +160,7 @@ class PostController extends StateNotifier<bool> {
       path: 'posts/${community.name}',
       id: postId,
       file: file,
+      webFile: webFile,
     );
 
     imageUrl.fold(

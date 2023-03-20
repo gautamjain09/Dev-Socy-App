@@ -1,3 +1,4 @@
+import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
 import 'package:devsocy/core/common_widgets/sign_in_button.dart';
 import 'package:devsocy/core/constants/constants.dart';
@@ -36,30 +37,32 @@ class LoginScreen extends ConsumerWidget {
       ),
       body: isLoading
           ? const Loader()
-          : Column(
-              children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                const Text(
-                  "Dive into Anything",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 22,
+          : Responsive(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 40,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    Constants.loginEmotePath,
-                    height: 300,
+                  const Text(
+                    "Dive into Anything",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 22,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                const SignInButton(),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Image.asset(
+                      Constants.loginEmotePath,
+                      height: 300,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  const SignInButton(),
+                ],
+              ),
             ),
     );
   }
