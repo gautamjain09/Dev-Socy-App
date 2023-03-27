@@ -34,7 +34,7 @@ class _AddModsScreenState extends ConsumerState<AddModsScreen> {
     });
   }
 
-  void saveMods() async {
+  void saveMods() {
     ref
         .read(communityControllerProvider.notifier)
         .addModsInACommunity(widget.name, modsUids.toList(), context);
@@ -66,7 +66,7 @@ class _AddModsScreenState extends ConsumerState<AddModsScreen> {
                           }
                           counter++;
                           return CheckboxListTile(
-                            value: modsUids.contains(member),
+                            value: modsUids.contains(userData.uid),
                             onChanged: (val) {
                               if (val!) {
                                 addUid(member);

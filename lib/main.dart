@@ -47,7 +47,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           data: (data) {
             return MaterialApp.router(
               debugShowCheckedModeBanner: false,
-              title: 'Developer Society',
+              title: 'Developers Society',
               theme: ref.watch(themeNotifierProvider),
               routerDelegate: RoutemasterDelegate(
                 routesBuilder: (context) {
