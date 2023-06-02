@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devsocy/core/constants/constants.dart';
-import 'package:devsocy/core/constants/firebase_constants.dart';
+import 'package:devsocy/core/constants.dart';
 import 'package:devsocy/core/failure.dart';
 import 'package:devsocy/core/providers/firebase_providers.dart';
 import 'package:devsocy/core/type_defs.dart';
@@ -29,7 +28,7 @@ class AuthRepository {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
 
-  // this.value not abblicable for private variables
+  // this.value not applicable for private variables
   AuthRepository({
     required FirebaseFirestore firestore,
     required FirebaseAuth auth,
@@ -38,10 +37,14 @@ class AuthRepository {
         _auth = auth,
         _googleSignIn = googleSignIn;
 
+  // ------------------------- Getters---------------------------------------------->
+
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
+
+  // ------------------------- Functions---------------------------------------------->
 
   FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
@@ -84,11 +87,11 @@ class AuthRepository {
         userModel = await getUserData(userCredential.user!.uid).first;
       }
 
-      return right(userModel);
+      return right(userModel); // success
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
-      return left(Failure(e.toString()));
+      return left(Failure(e.toString())); // failure
     }
   }
 
@@ -123,7 +126,7 @@ class AuthRepository {
   }
 
   void logOut() async {
-    await _googleSignIn.signOut();
     await _auth.signOut();
+    await _googleSignIn.signOut();
   }
 }

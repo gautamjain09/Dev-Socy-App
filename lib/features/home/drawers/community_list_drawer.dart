@@ -1,6 +1,6 @@
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
-import 'package:devsocy/core/common_widgets/sign_in_button.dart';
+import 'package:devsocy/core/common_widgets/google_signin_button.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:flutter/material.dart';

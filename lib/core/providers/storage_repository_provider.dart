@@ -34,8 +34,8 @@ class StorageRepository {
         uploadTask = storageRef.putFile(file!);
       }
       TaskSnapshot taskSnapshot = await uploadTask;
-
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+
       return right(downloadUrl);
     } on FirebaseException catch (e) {
       throw e.message!;

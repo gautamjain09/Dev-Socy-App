@@ -9,21 +9,20 @@ import 'package:devsocy/features/post/screens/add_post_screen.dart';
 import 'package:devsocy/features/post/screens/add_post_type_screen.dart';
 import 'package:devsocy/features/post/screens/comment_screen.dart';
 import 'package:devsocy/features/user_profile/screens/user_profile_screen.dart';
+import 'features/user_profile/screens/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
-import 'features/user_profile/screens/edit_profile_screen.dart';
-
 final loggedOutRoute = RouteMap(
   routes: {
-    '/': (_) => const MaterialPage(child: LoginScreen()),
+    '/': (route) => const MaterialPage(child: LoginScreen()),
   },
 );
 
 final loggedInRoute = RouteMap(
   routes: {
-    '/': (_) => const MaterialPage(child: HomeScreen()),
-    '/create-community': (_) =>
+    '/': (route) => const MaterialPage(child: HomeScreen()),
+    '/create-community': (route) =>
         const MaterialPage(child: CreateCommunityScreen()),
     '/r/:name': (route) => MaterialPage(
           child: CommunityScreen(

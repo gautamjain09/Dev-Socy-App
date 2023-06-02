@@ -1,7 +1,7 @@
 class PostModel {
   final String id;
   final String title;
-  final String? link;
+  final String? link; // link or downloadImageurl
   final String? description;
   final String communityName;
   final String communityProfilePic;

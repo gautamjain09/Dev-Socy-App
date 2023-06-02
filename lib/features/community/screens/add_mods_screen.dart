@@ -20,19 +20,7 @@ class AddModsScreen extends ConsumerStatefulWidget {
 class _AddModsScreenState extends ConsumerState<AddModsScreen> {
   // Counter is used when we set the initial state of add mods screen
   int counter = 0;
-
   Set<String> modsUids = {};
-  void addUid(String uid) {
-    setState(() {
-      modsUids.add(uid);
-    });
-  }
-
-  void removeUid(String uid) {
-    setState(() {
-      modsUids.remove(uid);
-    });
-  }
 
   void saveMods() {
     ref
@@ -62,16 +50,20 @@ class _AddModsScreenState extends ConsumerState<AddModsScreen> {
                   return ref.watch(getUserDataProvider(member)).when(
                         data: ((userData) {
                           if (community.mods.contains(member) && counter == 0) {
-                            modsUids.add(member);
+                            modsUids = community.mods.toSet();
                           }
                           counter++;
                           return CheckboxListTile(
                             value: modsUids.contains(userData.uid),
                             onChanged: (val) {
                               if (val!) {
-                                addUid(member);
+                                setState(() {
+                                  modsUids.add(userData.uid);
+                                });
                               } else {
-                                removeUid(member);
+                                setState(() {
+                                  modsUids.remove(userData.uid);
+                                });
                               }
                             },
                             title: Text(userData.name),

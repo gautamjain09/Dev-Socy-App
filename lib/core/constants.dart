@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+class FirebaseConstants {
+  static const usersCollection = 'users';
+  static const communitiesCollection = 'communities';
+  static const postsCollection = 'posts';
+  static const commentsCollection = 'comments';
+}
+
 class Constants {
   // Assets
   static const logoPath = 'assets/images/logo.png';
@@ -23,17 +30,4 @@ class Constants {
     fontFamily: 'MyFlutterApp',
     fontPackage: null,
   );
-
-  // Awards Logo
-  static const awardsPath = 'assets/images/awards';
-  static const awards = {
-    'awesomeAns': '${Constants.awardsPath}/awesomeanswer.png',
-    'gold': '${Constants.awardsPath}/gold.png',
-    'platinum': '${Constants.awardsPath}/platinum.png',
-    'helpful': '${Constants.awardsPath}/helpful.png',
-    'plusone': '${Constants.awardsPath}/plusone.png',
-    'rocket': '${Constants.awardsPath}/rocket.png',
-    'thankyou': '${Constants.awardsPath}/thankyou.png',
-    'til': '${Constants.awardsPath}/til.png',
-  };
 }

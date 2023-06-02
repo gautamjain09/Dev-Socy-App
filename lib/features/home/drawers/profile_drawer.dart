@@ -1,3 +1,4 @@
+import 'package:devsocy/core/theme/theme.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/material.dart';
@@ -59,10 +60,16 @@ class ProfileDrawer extends ConsumerWidget {
               },
             ),
             // Theme Toggler
-            Switch.adaptive(
-              value: ref.watch(themeNotifierProvider.notifier).mode ==
-                  ThemeMode.dark,
-              onChanged: (val) => toggleTheme(ref),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.dark_mode),
+                Switch.adaptive(
+                  value: ref.watch(themeNotifierProvider.notifier).mode ==
+                      ThemeMode.dark,
+                  onChanged: (val) => toggleTheme(ref),
+                ),
+              ],
             )
           ],
         ),

@@ -1,7 +1,8 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
-import 'package:devsocy/core/constants/constants.dart';
+import 'package:devsocy/core/constants.dart';
+import 'package:devsocy/core/theme/theme.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/features/post/controller/post_controller.dart';
@@ -19,16 +20,16 @@ class PostCard extends ConsumerWidget {
     super.key,
   });
 
-  void deletePost(WidgetRef ref, BuildContext context) async {
-    ref.read(postControllerProvider.notifier).deletePost(post, context);
-  }
-
   void upVotePost(WidgetRef ref) async {
     ref.read(postControllerProvider.notifier).upVotePost(post);
   }
 
   void downVotePost(WidgetRef ref) async {
     ref.read(postControllerProvider.notifier).downVotePost(post);
+  }
+
+  void deletePost(WidgetRef ref, BuildContext context) async {
+    ref.read(postControllerProvider.notifier).deletePost(post, context);
   }
 
   @override
@@ -118,23 +119,6 @@ class PostCard extends ConsumerWidget {
                                   ),
                               ],
                             ),
-                            // if (post.awards.isNotEmpty) ...[
-                            //   const SizedBox(height: 5),
-                            //   SizedBox(
-                            //     height: 25,
-                            //     child: ListView.builder(
-                            //       scrollDirection: Axis.horizontal,
-                            //       itemCount: post.awards.length,
-                            //       itemBuilder: (BuildContext context, int index) {
-                            //         final award = post.awards[index];
-                            //         return Image.asset(
-                            //           Constants.awards[award]!,
-                            //           height: 23,
-                            //         );
-                            //       },
-                            //     ),
-                            //   ),
-                            // ],
                             Padding(
                               padding: const EdgeInsets.only(top: 10.0),
                               child: Text(
@@ -145,6 +129,7 @@ class PostCard extends ConsumerWidget {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 10),
                             if (isTypeImage)
                               SizedBox(
                                 height:
@@ -240,7 +225,6 @@ class PostCard extends ConsumerWidget {
                                         if (data.mods.contains(user.uid)) {
                                           return IconButton(
                                             onPressed: () {
-                                              // Mods-> Admin can delete a Post
                                               deletePost(ref, context);
                                             },
                                             icon: const Icon(
@@ -254,40 +238,6 @@ class PostCard extends ConsumerWidget {
                                           ErrorText(text: error.toString()),
                                       loading: () => const Loader(),
                                     ),
-                                // IconButton(
-                                //   icon: const Icon(Icons.card_giftcard_outlined),
-                                //   onPressed: () {
-                                //     showDialog(
-                                //       context: context,
-                                //       builder: (context) => Dialog(
-                                //         child: Padding(
-                                //           padding: const EdgeInsets.all(20),
-                                //           child: GridView.builder(
-                                //             shrinkWrap: true,
-                                //             gridDelegate:
-                                //                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                //               crossAxisCount: 4,
-                                //             ),
-                                //             itemCount: user.awards.length,
-                                //             itemBuilder: (context, index) {
-                                //               final award = user.awards[index];
-                                //               return GestureDetector(
-                                //                 onTap: () {},
-                                //                 child: Padding(
-                                //                   padding:
-                                //                       const EdgeInsets.all(8.0),
-                                //                   child: Image.asset(
-                                //                     Constants.awards[award]!,
-                                //                   ),
-                                //                 ),
-                                //               );
-                                //             },
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     );
-                                //   },
-                                // ),
                               ],
                             ),
                           ],

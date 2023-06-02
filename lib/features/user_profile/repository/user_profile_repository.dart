@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devsocy/core/constants/firebase_constants.dart';
+import 'package:devsocy/core/constants.dart';
 import 'package:devsocy/core/failure.dart';
 import 'package:devsocy/core/providers/firebase_providers.dart';
 import 'package:devsocy/core/type_defs.dart';
@@ -22,11 +22,15 @@ class UserProfileRepository {
     required FirebaseFirestore firestore,
   }) : _firestore = firestore;
 
+  // -------------------- Getters ---------------------------------------->
+
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
 
   CollectionReference get _post =>
       _firestore.collection(FirebaseConstants.postsCollection);
+
+  // ----------------------- Methods -------------------------------------->
 
   FutureVoid editProfile(UserModel user) async {
     try {

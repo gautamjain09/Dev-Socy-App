@@ -17,13 +17,11 @@ final authControllerProvider = StateNotifierProvider<AuthController, bool>(
 );
 
 final authStateChangeProvider = StreamProvider((ref) {
-  final authController = ref.watch(authControllerProvider.notifier);
-  return authController.authStateChange;
+  return ref.watch(authControllerProvider.notifier).authStateChange;
 });
 
 final getUserDataProvider = StreamProvider.family((ref, String uid) {
-  final authController = ref.watch(authControllerProvider.notifier);
-  return authController.getUserData(uid);
+  return ref.watch(authControllerProvider.notifier).getUserData(uid);
 });
 
 //------------------------ Controller & Methods ------------------------------------>
@@ -40,12 +38,17 @@ class AuthController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
+  //------------------------ Getters ------------------------------------>
+
   Stream<User?> get authStateChange => _authRepository.authStateChange;
+
+  //------------------------ Fnctions ------------------------------------>
 
   void signInWithGoogle(BuildContext context, bool isFromLogin) async {
     state = true;
     final user = await _authRepository.signInWithGoogle(isFromLogin);
     state = false;
+
     user.fold(
         (error) => showSnackbar(context, error.message),
         (userModel) =>

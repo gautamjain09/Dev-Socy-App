@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devsocy/core/constants/firebase_constants.dart';
 import 'package:devsocy/core/failure.dart';
 import 'package:devsocy/core/providers/firebase_providers.dart';
 import 'package:devsocy/core/type_defs.dart';
@@ -7,6 +6,8 @@ import 'package:devsocy/models/community_model.dart';
 import 'package:devsocy/models/post_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../core/constants.dart';
 
 // <---------------------------- Providers ------------------------------------>
 
@@ -39,11 +40,15 @@ class CommunityRepository {
     }
   }
 
+// <-------------------------- Getters ----- --------------------------->
+
   CollectionReference get _communities =>
       _firestore.collection(FirebaseConstants.communitiesCollection);
 
   CollectionReference get _post =>
       _firestore.collection(FirebaseConstants.postsCollection);
+
+// <-------------------------- Functions ---------------------------------->
 
   Stream<List<CommunityModel>> getUserCommunities(String uid) {
     return _communities
@@ -136,7 +141,7 @@ class CommunityRepository {
     }
   }
 
-  Stream<List<PostModel>> getCommunityPost(String communityName) {
+  Stream<List<PostModel>> getCommunityPosts(String communityName) {
     return _post
         .where(
           'communityName',

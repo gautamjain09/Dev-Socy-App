@@ -9,7 +9,7 @@ enum UserKarma {
   postLink(2),
   postImage(2),
   postAward(4),
-  postDelete(-2);
+  postDelete(-1);
 
   final int karma;
   const UserKarma(this.karma);

@@ -1,10 +1,10 @@
+import 'package:devsocy/core/theme/theme.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/features/home/delegates/search_community_delegate.dart';
 import 'package:devsocy/features/home/drawers/community_list_drawer.dart';
 import 'package:devsocy/features/home/drawers/profile_drawer.dart';
 import 'package:devsocy/features/post/screens/add_post_screen.dart';
 import 'package:devsocy/features/post/screens/feed_screen.dart';
-import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +20,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _index = 0;
-  void onPageChanged(int page) {
-    setState(() {
-      _index = page;
-    });
-  }
-
   List<Widget> tabList = [
     const FeedScreen(),
     const AddPostScreen(),
@@ -108,7 +102,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   label: '',
                 ),
               ],
-              onTap: onPageChanged,
+              onTap: (page) {
+                setState(() {
+                  _index = page;
+                });
+              },
               currentIndex: _index,
             ),
     );

@@ -50,44 +50,50 @@ class _CommentScreenState extends ConsumerState<CommentScreen> {
       appBar: AppBar(),
       body: ref.watch(getPostByIdProvider(widget.postId)).when(
             data: (data) {
-              return Column(
-                children: [
-                  PostCard(post: data),
-                  if (!isGuest)
-                    Responsive(
-                      child: TextField(
-                        onSubmitted: (val) {
-                          addComment(data);
-                        },
-                        controller: commentController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'What are your thoughts?',
-                          filled: true,
-                        ),
-                      ),
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Column(
+                      children: [
+                        PostCard(post: data),
+                        if (!isGuest)
+                          Responsive(
+                            child: TextField(
+                              onSubmitted: (val) {
+                                addComment(data);
+                              },
+                              controller: commentController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'What are your thoughts?',
+                                filled: true,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                  ref.watch(getPostCommentsProvider(widget.postId)).when(
-                        data: (data) {
-                          return Expanded(
-                            child: ListView.builder(
+                    ref.watch(getPostCommentsProvider(widget.postId)).when(
+                          data: (data) {
+                            return ListView.builder(
+                              shrinkWrap: true,
                               itemCount: data.length,
                               itemBuilder: (BuildContext context, int index) {
                                 final comment = data[index];
                                 return CommentCard(comment: comment);
                               },
-                            ),
-                          );
-                        },
-                        error: (error, stackTrace) {
-                          if (kDebugMode) {
-                            print(error.toString());
-                          }
-                          return ErrorText(text: error.toString());
-                        },
-                        loading: () => const Loader(),
-                      ),
-                ],
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            if (kDebugMode) {
+                              print(error.toString());
+                            }
+                            return ErrorText(text: error.toString());
+                          },
+                          loading: () => const Loader(),
+                        ),
+                  ],
+                ),
               );
             },
             error: (error, stackTrace) => ErrorText(text: error.toString()),

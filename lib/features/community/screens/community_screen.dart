@@ -60,7 +60,7 @@ class CommunityScreen extends ConsumerWidget {
                               alignment: Alignment.topLeft,
                               child: CircleAvatar(
                                 backgroundImage: NetworkImage(community.avatar),
-                                radius: 35,
+                                radius: 36,
                               ),
                             ),
                             const SizedBox(
@@ -152,7 +152,12 @@ class CommunityScreen extends ConsumerWidget {
                 ),
               );
             },
-            error: ((error, stackTrace) => ErrorText(text: error.toString())),
+            error: ((error, stackTrace) {
+              if (kDebugMode) {
+                print(error.toString());
+              }
+              return ErrorText(text: error.toString());
+            }),
             loading: () => const Loader(),
           ),
     );

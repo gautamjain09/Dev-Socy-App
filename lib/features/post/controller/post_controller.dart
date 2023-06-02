@@ -99,7 +99,8 @@ class PostController extends StateNotifier<bool> {
     state = false;
     res.fold((l) => showSnackbar(context, l.message), (r) {
       showSnackbar(context, "Posted Successfully");
-      Routemaster.of(context).pop();
+      Routemaster.of(context).push("/");
+      // Routemaster.of(context).pop();
     });
   }
 
@@ -232,10 +233,11 @@ class PostController extends StateNotifier<bool> {
     return _postRepository.getPostById(postId);
   }
 
-  void addComment(
-      {required BuildContext context,
-      required String text,
-      required PostModel post}) async {
+  void addComment({
+    required BuildContext context,
+    required String text,
+    required PostModel post,
+  }) async {
     String commentId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
 

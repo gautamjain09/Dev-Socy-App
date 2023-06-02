@@ -41,7 +41,7 @@ class SearchCommunityDelegate extends SearchDelegate {
               final community = communities[index];
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(community.banner),
+                  backgroundImage: NetworkImage(community.avatar),
                 ),
                 title: Text("r/${community.name}"),
                 onTap: () {

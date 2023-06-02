@@ -51,6 +51,7 @@ class UserProfileController extends StateNotifier<bool> {
   ) async {
     state = true;
     UserModel user = _ref.read(userProvider)!;
+
     if (bannerFile != null || bannerWebFile != null) {
       final bannerUrl = await _storageRepository.storeFile(
         path: "users/banner",
@@ -64,6 +65,7 @@ class UserProfileController extends StateNotifier<bool> {
         (r) => user = user.copyWith(banner: r),
       );
     }
+
     if (profileFile != null || profileWebFile != null) {
       final profileUrl = await _storageRepository.storeFile(
         path: "users/profile",

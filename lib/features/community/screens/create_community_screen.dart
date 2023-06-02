@@ -24,7 +24,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
   // ref and BuildContext are not required in parametersbecause it is a ConsumerStateWidget
   void createCommunity() {
     ref.read(communityControllerProvider.notifier).createCommunity(
-          communityNameController.text.trim(),
+          communityNameController.text.replaceAll(" ", "-").trim(),
           context,
         );
   }
@@ -57,7 +57,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(18),
                       ),
-                      maxLength: 21,
+                      maxLength: 24,
                     ),
                     const SizedBox(height: 30),
                     ElevatedButton(

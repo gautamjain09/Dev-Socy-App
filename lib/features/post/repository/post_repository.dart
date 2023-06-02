@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devsocy/core/constants/firebase_constants.dart';
+import 'package:devsocy/core/constants.dart';
 import 'package:devsocy/core/failure.dart';
 import 'package:devsocy/core/providers/firebase_providers.dart';
 import 'package:devsocy/core/type_defs.dart';
@@ -23,10 +23,14 @@ class PostRepository {
     required FirebaseFirestore firestore,
   }) : _firestore = firestore;
 
+  // --------------------------- Getters -------------------------------------->
+
   CollectionReference get _posts =>
       _firestore.collection(FirebaseConstants.postsCollection);
   CollectionReference get _comments =>
       _firestore.collection(FirebaseConstants.commentsCollection);
+
+  // --------------------------- Methods -------------------------------------->
 
   FutureVoid addPost(PostModel post) async {
     try {
@@ -102,6 +106,7 @@ class PostRepository {
     }
   }
 
+  // Comment Screen will acess the PostModel from postId
   Stream<PostModel> getPostById(String postId) {
     return _posts.doc(postId).snapshots().map(
           (event) => PostModel.fromMap(
@@ -114,9 +119,11 @@ class PostRepository {
     try {
       await _comments.doc(comment.id).set(comment.toMap());
 
-      return right(_posts.doc(comment.postId).update(
-        {'commentCount': FieldValue.increment(1)},
-      ));
+      return right(
+        _posts
+            .doc(comment.postId)
+            .update({'commentCount': FieldValue.increment(1)}),
+      );
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {

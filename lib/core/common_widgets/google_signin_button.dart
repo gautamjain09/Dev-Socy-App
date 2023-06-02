@@ -1,4 +1,4 @@
-import 'package:devsocy/core/constants/constants.dart';
+import 'package:devsocy/core/constants.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
 import 'package:devsocy/core/theme/pallete.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,5 @@
 import 'dart:io';
-
-import 'package:devsocy/core/constants/constants.dart';
-import 'package:devsocy/core/failure.dart';
+import 'package:devsocy/core/constants.dart';
 import 'package:devsocy/core/providers/storage_repository_provider.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/auth/controller/auth_controller.dart';
@@ -11,8 +9,6 @@ import 'package:devsocy/models/post_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
-
 import 'package:routemaster/routemaster.dart';
 
 // <-------------------------- Providers ---------------------------------->
@@ -27,18 +23,17 @@ final communityControllerProvider =
 );
 
 final userCommunitiesProvider = StreamProvider((ref) {
-  final communityController = ref.watch(communityControllerProvider.notifier);
-  return communityController.getUserCommunities();
+  return ref.watch(communityControllerProvider.notifier).getUserCommunities();
 });
 
 final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
-  final communityController = ref.watch(communityControllerProvider.notifier);
-  return communityController.getCommunityByName(name);
+  return ref
+      .watch(communityControllerProvider.notifier)
+      .getCommunityByName(name);
 });
 
 final searchCommunityProvider = StreamProvider.family((ref, String query) {
-  final communityController = ref.watch(communityControllerProvider.notifier);
-  return communityController.searchCommunity(query);
+  return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
 });
 
 final getCommunityPostsProvider =
@@ -66,8 +61,8 @@ class CommunityController extends StateNotifier<bool> {
 
   void createCommunity(String name, BuildContext context) async {
     state = true;
-
     final uid = _ref.read(userProvider)?.uid ?? '';
+
     CommunityModel communityModel = CommunityModel(
       id: name,
       name: name,
@@ -76,8 +71,8 @@ class CommunityController extends StateNotifier<bool> {
       members: [uid],
       mods: [uid],
     );
-
     final res = await _communityRepository.createCommunity(communityModel);
+
     state = false;
 
     res.fold((l) {
@@ -121,6 +116,7 @@ class CommunityController extends StateNotifier<bool> {
         (r) => community = community.copyWith(banner: r),
       );
     }
+
     if (profileFile != null || profileWebFile != null) {
       // Stores file at communities/profile/${community.name}
       final profileUrl = await _storageRepository.storeFile(
@@ -153,7 +149,7 @@ class CommunityController extends StateNotifier<bool> {
   void joinCommunity(CommunityModel community, BuildContext context) async {
     final user = _ref.read(userProvider)!;
 
-    Either<Failure, void> res;
+    final res;
     if (community.members.contains(user.uid)) {
       res = await _communityRepository.leaveCommunity(community.name, user.uid);
     } else {
@@ -184,6 +180,6 @@ class CommunityController extends StateNotifier<bool> {
   }
 
   Stream<List<PostModel>> getCommunityPosts(String communityName) {
-    return _communityRepository.getCommunityPost(communityName);
+    return _communityRepository.getCommunityPosts(communityName);
   }
 }

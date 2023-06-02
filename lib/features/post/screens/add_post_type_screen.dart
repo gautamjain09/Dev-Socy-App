@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
+import 'package:devsocy/core/theme/theme.dart';
 import 'package:devsocy/core/utils.dart';
 import 'package:devsocy/features/community/controller/community_controller.dart';
 import 'package:devsocy/features/post/controller/post_controller.dart';
 import 'package:devsocy/models/community_model.dart';
-import 'package:devsocy/core/theme/pallete.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -96,8 +96,8 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     final bool isTypeImage = (widget.type == 'image');
     final bool isTypeText = (widget.type == 'text');
     final bool isTypeLink = (widget.type == 'link');
-    final ThemeData currentTheme = ref.watch(themeNotifierProvider);
     final isLoading = ref.watch(postControllerProvider);
+    final ThemeData currentTheme = ref.watch(themeNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -126,7 +126,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(18),
                       ),
-                      maxLength: 25,
+                      maxLength: 30,
                     ),
                     const SizedBox(height: 10),
                     if (isTypeImage)
@@ -188,15 +188,18 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
                     ref.watch(userCommunitiesProvider).when(
                           data: (data) {
                             communities = data;
+
                             if (communities.isEmpty) {
-                              return const SizedBox();
+                              return const Text(
+                                  "Join/Create Community to Share a Post");
                             }
+
                             return DropdownButton(
                               value: selectedCommunity ?? data[0],
                               items: data
-                                  .map((e) => DropdownMenuItem(
-                                        value: e,
-                                        child: Text(e.name),
+                                  .map((myCommunity) => DropdownMenuItem(
+                                        value: myCommunity,
+                                        child: Text(myCommunity.name),
                                       ))
                                   .toList(),
                               onChanged: (value) {
