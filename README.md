@@ -1,16 +1,66 @@
-# devsocy
+# Dev Socy
 
-A new Flutter project.
+Dev Socy is a unique Flutter app that brings together a diverse community of developers from around the world - all passionate about sharing their thoughts and insights on technology in all its forms. Through Dev Socy, members can share their knowledge, post images and text, and exchange ideas through links, creating a dynamic and engaging platform for collaboration and innovation. Whether you're a novice developer looking to learn or a seasoned expert looking to connect, Dev Socy is the ultimate community for all things tech. Join us today and see where your passion for technology can take you!
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Demo
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Logo
+
+![App-Logo](assets/images/logo.png)
+
+
+
+## Features
+
+- Google/Guest Authentication
+- Create, Join community
+- Community Profile (Avatar, Banner, Members)
+- Post (link only, photo, text only)
+- Displaying Latest Posts
+- Upvote, Downvote, Comment
+- Update Karma
+- Add Moderators
+- User Profile (Avatar, Banner)
+- Theme Toggle
+## Tech Stacks
+
+| Tools                 |                                     Link                                      |
+|:----------------------|:-----------------------------------------------------------------------------:|
+| 🤖  Language          |                       [Dart](https://dart.dev/)                               |
+|  🩶   Framework         |                     [Flutter](https://flutter.dev/)                         |
+| 🌐  Authentication    |                 [Google-Auth](https://firebase.google.com/docs/auth )        |
+| 💻  Database          |           [Cloud-Firestore](https://firebase.google.com/docs/firestore)     |
+| 📁  Storage          |           [Firebase-Storage](https://firebase.google.com/docs/storage)     |
+| 🚀  State Management  |              [Riverpod](https://pub.dev/packages/flutter_riverpod)            |
+| 🚒  Route Management  |              [RouteMaster](https://pub.dev/packages/routemaster)            |
+
+
+
+## Installation
+
+After cloning this repository, migrate to main branch.
+
+- Create Firebase Project
+- Enable Authentication (Google Sign In, Guest Sign In)
+- Make Firestore Rules
+- Create Android, iOS & Web Apps
+- Use FlutterFire CLI to add the Firebase Project to this app. Then run the following commands to run your app:
+ 
+```bash
+  flutter pub get
+  flutter run
+```
+    
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+
+## Contributing
+
+Contributions are always welcome!
+
+
