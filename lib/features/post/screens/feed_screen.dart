@@ -39,7 +39,12 @@ class FeedScreen extends ConsumerWidget {
                       loading: () => const Loader(),
                     );
               },
-              error: ((error, stackTrace) => ErrorText(text: error.toString())),
+              error: ((error, stackTrace) {
+                if (kDebugMode) {
+                  print(error.toString());
+                }
+                return ErrorText(text: error.toString());
+              }),
               loading: () => const Loader(),
             )
         : ref.watch(guestPostsProvider).when(

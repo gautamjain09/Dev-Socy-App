@@ -55,7 +55,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                 routesBuilder: (context) {
                   if (data != null) {
                     getData(ref, data);
-                    if (userModel != null) {
+                    if (ref.watch(userProvider) != null) {
                       return loggedInRoute;
                     }
                   }
