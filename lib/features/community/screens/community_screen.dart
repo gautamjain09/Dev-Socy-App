@@ -21,7 +21,7 @@ class CommunityScreen extends ConsumerWidget {
   void joinCommunity(
       WidgetRef ref, CommunityModel community, BuildContext context) {
     ref
-        .read(communityControllerProvider.notifier)
+        .watch(communityControllerProvider.notifier)
         .joinCommunity(community, context);
   }
 

@@ -52,7 +52,7 @@ class AuthController extends StateNotifier<bool> {
     user.fold(
         (error) => showSnackbar(context, error.message),
         (userModel) =>
-            _ref.read(userProvider.notifier).update((state) => userModel));
+            _ref.watch(userProvider.notifier).update((state) => userModel));
   }
 
   Stream<UserModel> getUserData(String uid) {
@@ -66,7 +66,7 @@ class AuthController extends StateNotifier<bool> {
     user.fold(
         (error) => showSnackbar(context, error.message),
         (userModel) =>
-            _ref.read(userProvider.notifier).update((state) => userModel));
+            _ref.watch(userProvider.notifier).update((state) => userModel));
   }
 
   void logOut() async {

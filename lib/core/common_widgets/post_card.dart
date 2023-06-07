@@ -21,15 +21,15 @@ class PostCard extends ConsumerWidget {
   });
 
   void upVotePost(WidgetRef ref) async {
-    ref.read(postControllerProvider.notifier).upVotePost(post);
+    ref.watch(postControllerProvider.notifier).upVotePost(post);
   }
 
   void downVotePost(WidgetRef ref) async {
-    ref.read(postControllerProvider.notifier).downVotePost(post);
+    ref.watch(postControllerProvider.notifier).downVotePost(post);
   }
 
   void deletePost(WidgetRef ref, BuildContext context) async {
-    ref.read(postControllerProvider.notifier).deletePost(post, context);
+    ref.watch(postControllerProvider.notifier).deletePost(post, context);
   }
 
   @override
@@ -137,7 +137,7 @@ class PostCard extends ConsumerWidget {
                                 width: MediaQuery.of(context).size.width,
                                 child: Image.network(
                                   post.link!,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
                             if (isTypeText)

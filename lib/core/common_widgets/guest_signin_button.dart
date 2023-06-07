@@ -7,7 +7,7 @@ class GuestLoginButton extends ConsumerWidget {
   const GuestLoginButton({super.key});
 
   void signInAsGuest(WidgetRef ref, BuildContext context) {
-    ref.read(authControllerProvider.notifier).signInAsGuest(context);
+    ref.watch(authControllerProvider.notifier).signInAsGuest(context);
   }
 
   @override

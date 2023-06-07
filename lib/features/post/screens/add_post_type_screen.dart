@@ -61,7 +61,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     if (widget.type == 'image' &&
         ((bannerFile != null || bannerWebImage != null)) &&
         titleController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).postImage(
+      ref.watch(postControllerProvider.notifier).postImage(
             context: context,
             title: titleController.text.trim(),
             community: selectedCommunity ?? communities[0],
@@ -71,7 +71,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     } else if (widget.type == 'text' &&
         titleController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).postText(
+      ref.watch(postControllerProvider.notifier).postText(
             context: context,
             title: titleController.text.trim(),
             community: selectedCommunity ?? communities[0],
@@ -80,7 +80,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     } else if (widget.type == 'link' &&
         titleController.text.isNotEmpty &&
         linkController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).postLink(
+      ref.watch(postControllerProvider.notifier).postLink(
             context: context,
             title: titleController.text.trim(),
             community: selectedCommunity ?? communities[0],

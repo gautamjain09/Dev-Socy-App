@@ -75,7 +75,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   void saveChanges() {
-    ref.read(userProfileControllerProvider.notifier).editProfile(
+    ref.watch(userProfileControllerProvider.notifier).editProfile(
           bannerFile,
           profileFile,
           bannerWebFile,

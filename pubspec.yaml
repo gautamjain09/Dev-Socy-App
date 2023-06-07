@@ -41,16 +41,18 @@ dependencies:
   cloud_firestore: ^4.4.2
   firebase_auth: ^4.2.8
   google_sign_in: ^6.0.0
-  image_picker: ^0.8.6+2
   flutter_riverpod: ^2.2.0
   fpdt: ^0.1.4
-  fpdart: ^0.4.0
+  fpdart: ^0.6.0
   routemaster: ^1.0.1
   dotted_border: ^2.0.0+3
   file_picker: ^5.2.5
   shared_preferences: ^2.0.18
   uuid: ^3.0.7
   any_link_preview: ^3.0.0
+  restart_app: ^1.1.1+1
+  flutter_image_compress: ^2.0.0
+
   
 
 dev_dependencies:
@@ -62,6 +64,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#ffffff"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -23,7 +23,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
 
   // ref and BuildContext are not required in parametersbecause it is a ConsumerStateWidget
   void createCommunity() {
-    ref.read(communityControllerProvider.notifier).createCommunity(
+    ref.watch(communityControllerProvider.notifier).createCommunity(
           communityNameController.text.replaceAll(" ", "-").trim(),
           context,
         );

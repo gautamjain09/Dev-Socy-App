@@ -24,7 +24,7 @@ class _AddModsScreenState extends ConsumerState<AddModsScreen> {
 
   void saveMods() {
     ref
-        .read(communityControllerProvider.notifier)
+        .watch(communityControllerProvider.notifier)
         .addModsInACommunity(widget.name, modsUids.toList(), context);
   }
 

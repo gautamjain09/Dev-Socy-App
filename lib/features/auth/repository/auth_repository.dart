@@ -9,14 +9,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:restart_app/restart_app.dart';
 
 // ---------------------- Providers ---------------------------------------------->
 
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
-    firestore: ref.read(firestoreProvider),
-    auth: ref.read(authProvider),
-    googleSignIn: ref.read(googleSignInProvider),
+    firestore: ref.watch(firestoreProvider),
+    auth: ref.watch(authProvider),
+    googleSignIn: ref.watch(googleSignInProvider),
   ),
 );
 
@@ -128,5 +129,6 @@ class AuthRepository {
   void logOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
+    Restart.restartApp();
   }
 }
