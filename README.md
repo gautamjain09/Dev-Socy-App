@@ -1,15 +1,20 @@
 # Dev Socy
 
-Dev Socy is a unique Flutter app that brings together a diverse community of developers from around the world - all passionate about sharing their thoughts and insights on technology in all its forms. Through Dev Socy, members can share their knowledge, post images and text, and exchange ideas through links, creating a dynamic and engaging platform for collaboration and innovation. Whether you're a novice developer looking to learn or a seasoned expert looking to connect, Dev Socy is the ultimate community for all things tech. Join us today and see where your passion for technology can take you!
+Dev Socy is a Flutter app that brings together a diverse community of developers from around the world - all passionate about sharing their thoughts and insights on technology in all its forms. Through Dev Socy, members can share their knowledge, post images and text, and exchange ideas through links, creating a dynamic and engaging platform for collaboration and innovation. Whether you're a novice developer looking to learn or a seasoned expert looking to connect, Dev Socy is the ultimate community for all things tech. Join us today and see where your passion for technology can take you!
 
-
-## Demo
-
-
-
-## Logo
+## logo
 
 ![App-Logo](assets/images/logo.png)
+
+
+## App Images
+
+| ![Images_1](images_playstore/image_1.jpg) | ![Images_2](images_playstore/image_2.jpg) |
+|--|--|
+| ![Images_3](images_playstore/image_3.jpg) | ![Images_4](images_playstore/image_4.jpg) |
+
+
+
 
 
 
@@ -56,7 +61,7 @@ After cloning this repository, migrate to main branch.
     
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+![MIT](LICENSE)
 
 
 ## Contributing
