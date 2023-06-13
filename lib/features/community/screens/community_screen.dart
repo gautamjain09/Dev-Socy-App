@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/common_widgets/loader.dart';
@@ -43,8 +44,14 @@ class CommunityScreen extends ConsumerWidget {
                       flexibleSpace: Stack(
                         children: [
                           Positioned.fill(
-                            child: Image.network(
-                              community.banner,
+                            child: CachedNetworkImage(
+                              imageUrl: community.banner,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) =>
+                                      CircularProgressIndicator(
+                                          value: downloadProgress.progress),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                               fit: BoxFit.cover,
                             ),
                           ),

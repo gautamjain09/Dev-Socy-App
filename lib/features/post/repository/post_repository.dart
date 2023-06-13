@@ -155,7 +155,7 @@ class PostRepository {
           'createdAt',
           descending: true,
         )
-        .limit(9)
+        .limit(20)
         .snapshots()
         .map((event) => event.docs
             .map((e) => PostModel.fromMap(e.data() as Map<String, dynamic>))

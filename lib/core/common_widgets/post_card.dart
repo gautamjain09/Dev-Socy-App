@@ -1,4 +1,5 @@
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:devsocy/Responsive/responsive.dart';
 import 'package:devsocy/core/common_widgets/error_text.dart';
 import 'package:devsocy/core/constants.dart';
@@ -135,8 +136,16 @@ class PostCard extends ConsumerWidget {
                                 height:
                                     MediaQuery.of(context).size.height * 0.35,
                                 width: MediaQuery.of(context).size.width,
-                                child: Image.network(
-                                  post.link!,
+                                child: CachedNetworkImage(
+                                  imageUrl: post.link!,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) {
+                                    return CircularProgressIndicator(
+                                        value: downloadProgress.progress);
+                                  },
+                                  errorWidget: (context, url, error) {
+                                    return Icon(Icons.error);
+                                  },
                                   fit: BoxFit.fill,
                                 ),
                               ),
